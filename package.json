@@ -1,0 +1,29 @@
+{
+  "name": "charsheet-mortal",
+  "version": "0.0.4",
+  "description": "Charsheet.su - character sheet for mortal",
+  "keywords": [
+    "mortal",
+    "wod"
+  ],
+  "scripts": {
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "test": "npm run lint && npm run build-dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jehy/WOD-Mortal-charsheet"
+  },
+  "author": "Jehy",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "~13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
