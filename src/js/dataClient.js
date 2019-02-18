@@ -1,5 +1,5 @@
 import requestPromise from 'request-promise';
-import {errorPannel} from './panels';
+import {errorPanel} from './panels';
 import {isRevision, isDevel} from './options';
 
 async function load(mockData) {
@@ -26,7 +26,7 @@ async function sendDots(attr, value) {
     return true;
   }
   if (isRevision()) {
-    errorPannel.show('You can not edit revision data! If you want it - restore revision and edit it.');
+    errorPanel.show('You can not edit revision data! If you want it - restore revision and edit it.');
     return false;
   }
   const options = {
@@ -42,12 +42,12 @@ async function sendDots(attr, value) {
   return requestPromise(options)
     .then((data)=> {
       if (data.error !== undefined) {
-        errorPannel.show(`Error sending dots: ${data.error}`);
+        errorPanel.show(`Error sending dots: ${data.error}`);
       }
       // POST succeeded...
     })
     .catch((err)=> {
-      errorPannel.show(`Error sending dots: ${JSON.stringify(err)}`);
+      errorPanel.show(`Error sending dots: ${JSON.stringify(err)}`);
       // POST failed...
     });
 }

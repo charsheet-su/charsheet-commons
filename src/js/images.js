@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {errorPannel} from './panels';
+import {errorPanel} from './panels';
 
 function readURL(input, to) {
 
@@ -28,14 +28,14 @@ function readURL(input, to) {
     contentType: false,
     success(res) {
       if (res.error) {
-        errorPannel.show(`Error uploading image!${res.error}`);
+        errorPanel.show(`Error uploading image!${res.error}`);
 
       } else if (res.uri) {
         $(`img[class="${to}"]`).attr('src', res.uri).css('display', 'block');
       }
     },
     error(res) {
-      errorPannel.show(`Error uploading image!${res}`);
+      errorPanel.show(`Error uploading image!${res}`);
     },
   });
 
@@ -53,14 +53,14 @@ function removeImage(type) {
     contentType: false,
     success(res) {
       if (res.error) {
-        errorPannel.show(`Error removing image!${res.error}`);
+        errorPanel.show(`Error removing image!${res.error}`);
 
       } else {
         $(`img[class="${type}"]`).css('display', 'none');// default image
       }
     },
     error(res) {
-      errorPannel.show(`Error uploading image!${res}`);
+      errorPanel.show(`Error uploading image!${res}`);
     },
   });
 }

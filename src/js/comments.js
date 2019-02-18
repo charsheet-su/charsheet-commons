@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {errorPannel} from './panels';
+import {errorPanel} from './panels';
 
 function loadComments() {
 
@@ -17,7 +17,7 @@ function loadComments() {
     },
     )
     .catch(() => {
-      errorPannel.show('Error getting comments');
+      errorPanel.show('Error getting comments');
     });
 }
 $(document).ready(() => {
@@ -28,7 +28,7 @@ function addComment() {
 
   const comment = $('input[name="comment"]').val();
   if (!comment) {
-    errorPannel.show('Please enter comment text');
+    errorPanel.show('Please enter comment text');
     return false;
   }
   const data = {comment};
@@ -39,14 +39,14 @@ function addComment() {
   })
     .then((reply) => {
       if (reply.error) {
-        errorPannel.show(`Please correct your input:<p>${reply.error}</p>`);
+        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
       }
       else {
         loadComments();
       }
     })
     .catch((err) => {
-      errorPannel.show(`Error saving sheet, error: ${err}`);
+      errorPanel.show(`Error saving sheet, error: ${err}`);
     });
 }
 

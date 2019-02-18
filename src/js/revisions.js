@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {errorPannel} from './panels';
+import {errorPanel} from './panels';
 
 async function loadRevisions() {
   return $.get('/api/get_revisions')
@@ -27,7 +27,7 @@ async function loadRevisions() {
     },
     )
     .catch(() => {
-      errorPannel.show('Error getting comments');
+      errorPanel.show('Error getting comments');
     });
 }
 
@@ -39,7 +39,7 @@ async function compareRevisions() {
     compareFrom = selected.val();
   }
   else {
-    errorPannel.show('Please select a revision to compare from!');
+    errorPanel.show('Please select a revision to compare from!');
     return false;
   }
 
@@ -48,7 +48,7 @@ async function compareRevisions() {
     compareTo = selected.val();
   }
   else {
-    errorPannel.show('Please select a revision to compare to!');
+    errorPanel.show('Please select a revision to compare to!');
     return false;
   }
   // console.log('comparing ' + compare_from + ' to ' + compare_to);
@@ -61,14 +61,14 @@ async function compareRevisions() {
   })
     .then((reply) => {
       if (reply.error) {
-        errorPannel.show(`Please correct your input:<p>${reply.error}</p>`);
+        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
       }
       else {
         $('.compare_revisions').html(reply.diff);
       }
     })
     .catch((err) => {
-      errorPannel.show(`Error comparing revisions, error: ${err}`);
+      errorPanel.show(`Error comparing revisions, error: ${err}`);
     });
 }
 
@@ -92,14 +92,14 @@ async function restoreRevision(revisionId) {
   })
     .then((reply) => {
       if (reply.error) {
-        errorPannel.show(`Please correct your input:<p>${reply.error}</p>`);
+        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
       }
       else {
         viewRevision(0);
       }
     })
     .catch((err) => {
-      errorPannel.show(`Error restoring revision, error: ${err}`);
+      errorPanel.show(`Error restoring revision, error: ${err}`);
     });
 }
 
@@ -107,7 +107,7 @@ async function restoreRevision(revisionId) {
 function saveRevision() {
   const comment = $('input[name="revision_comment"]').val();
   if (!comment) {
-    errorPannel.show('Please enter comment text');
+    errorPanel.show('Please enter comment text');
     return false;
   }
   const data = {comment};
@@ -118,7 +118,7 @@ function saveRevision() {
   })
     .then((reply) => {
       if (reply.error) {
-        errorPannel.show(`Please correct your input:<p>${reply.error}</p>`);
+        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
         return false;
       }
 
@@ -126,7 +126,7 @@ function saveRevision() {
 
     })
     .catch((err) => {
-      errorPannel.show(`Error saving revision, error: ${err}`);
+      errorPanel.show(`Error saving revision, error: ${err}`);
     });
 }
 
