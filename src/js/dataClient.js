@@ -6,6 +6,7 @@ async function load(mockData) {
 
   if (isDevel()) {
     // do not load for development environment
+    console.log('dev mode, returning mock data');
     return mockData;
   }
   const options = {
@@ -22,7 +23,7 @@ async function sendDot(attr, value) {
   // attr=attr.replace('[','%5B').replace(']','%5D');
   // data[attr] = value;
   if (isDevel()) {
-    console.log(`Saving ${attr} = ${value}`);
+    console.log(`dev mode, saving ${attr} = ${value}`);
     return true;
   }
   if (isRevision()) {

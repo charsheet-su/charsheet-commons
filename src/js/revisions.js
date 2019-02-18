@@ -1,7 +1,12 @@
 import $ from 'jquery';
 import {errorPanel} from './panels';
+import {isDevel} from './options';
 
 async function loadRevisions() {
+  if (isDevel())
+  {
+    return true;
+  }
   return $.get('/api/get_revisions')
     .then((data) => {
       const t = $('.revisions tbody');

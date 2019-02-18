@@ -1,8 +1,12 @@
 import $ from 'jquery';
 import {errorPanel} from './panels';
+import {isDevel} from './options';
 
 function loadComments() {
-
+  if (isDevel())
+  {
+    return true;
+  }
   return $.get('/api/get_comments')
     .then((data) => {
       const t = $('.comments tbody');
