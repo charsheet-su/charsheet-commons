@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import {compareRevisions, saveRevision} from './revisions';
+import addComment from './revisions';
 
 const form = `
 <h1>Useful things</h1>

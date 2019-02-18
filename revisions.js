@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import {errorPannel} from './panels';
 
-function loadRevisions() {
-  var jqxhr = $.get("/api/get_revisions")
+async function loadRevisions() {
+  return $.get("/api/get_revisions")
     .then(function (data) {
         var t = $('.revisions tbody');
         t.empty();//clean
@@ -30,7 +30,7 @@ function loadRevisions() {
     })
 }
 
-function compareRevisions() {
+async function compareRevisions() {
   var compare_from = "";
   var compare_to = "";
   var selected = $("input[type='radio'][name='compare_from']:checked");
@@ -39,7 +39,7 @@ function compareRevisions() {
   }
   else {
     errorPannel.show('Please select a revision to compare from!');
-    return;
+    return false;
   }
 
   selected = $("input[type='radio'][name='compare_to']:checked");
@@ -48,12 +48,12 @@ function compareRevisions() {
   }
   else {
     errorPannel.show('Please select a revision to compare to!');
-    return;
+    return false;
   }
   //console.log('comparing ' + compare_from + ' to ' + compare_to);
 
   var data = {compare_from: compare_from, compare_to: compare_to};
-  $.ajax({
+  return $.ajax({
     url: '/api/compare_revisions',
     data: data,
     type: 'POST'
@@ -71,9 +71,9 @@ function compareRevisions() {
     });
 }
 
-function restoreRevision(revision_id) {
+async function restoreRevision(revision_id) {
   var data = {revision_id: revision_id};
-  $.ajax({
+  return $.ajax({
     url: '/api/restore_revision',
     data: data,
     type: 'POST'
@@ -113,14 +113,14 @@ function ifRevision() {
 
 }
 
-function save_revision() {
+function saveRevision() {
   var comment = $('input[name="revision_comment"]').val();
   if (!comment) {
     errorPannel.show('Please enter comment text');
-    return;
+    return false;
   }
   var data = {comment: comment};
-  $.ajax({
+  return $.ajax({
     url: '/api/add_revision',
     data: data,
     type: 'POST'
@@ -128,9 +128,10 @@ function save_revision() {
     .then(function (data) {
       if (data.error) {
         errorPannel.show('Please correct your input:<p>' + data.error + '</p>');
+        return false;
       }
       else {
-        loadRevisions();
+        return loadRevisions();
       }
     })
     .catch(function (data) {
@@ -144,4 +145,5 @@ module.exports = {
   viewRevision,
   ifRevision,
   restoreRevision,
+  saveRevision,
 };
