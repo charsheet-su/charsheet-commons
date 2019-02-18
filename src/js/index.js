@@ -4,6 +4,7 @@ import * as comments from './comments';
 import * as form from './form';
 import * as images from './images';
 import * as options from './options';
+import * as dataClient from './dataClient';
 
 const onReady = ()=>{
   return Promise.all([comments.loadComments(), form.loadForm(), images.loadImages(), revisions.loadRevisions()]);
@@ -17,4 +18,5 @@ export {
   images,
   onReady,
   options,
+  dataClient,
 };
