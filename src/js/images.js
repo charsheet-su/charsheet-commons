@@ -78,4 +78,4 @@ function loadImages()
   });
 }
 
-module.exports = {removeImage, loadImages};
+export {removeImage, loadImages};

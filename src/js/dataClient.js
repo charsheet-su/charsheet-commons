@@ -1,12 +1,10 @@
-import {errorPannel} from './panels';
-
 import requestPromise from 'request-promise';
-const isDevel = (window.location.href.indexOf('charsheet.su/') === -1);
-const isRevision = (window.location.pathname.split('/').length === 6);
+import {errorPannel} from './panels';
+import {isRevision, isDevel} from './options';
 
 async function load(mockData) {
 
-  if (isDevel) {
+  if (isDevel()) {
     // do not load for development environment
     return mockData;
   }
@@ -23,11 +21,11 @@ async function sendDots(attr, value) {
   // var data = {};
   // attr=attr.replace('[','%5B').replace(']','%5D');
   // data[attr] = value;
-  if (isDevel) {
+  if (isDevel()) {
     console.log(`Saving ${attr} = ${value}`);
     return true;
   }
-  if (isRevision) {
+  if (isRevision()) {
     errorPannel.show('You can not edit revision data! If you want it - restore revision and edit it.');
     return false;
   }
@@ -54,6 +52,6 @@ async function sendDots(attr, value) {
     });
 }
 
-module.exports = {
+export {
   load, sendDots,
 };

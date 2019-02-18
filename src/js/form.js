@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import {compareRevisions, saveRevision} from './revisions';
-import addComment from './revisions';
+import {addComment} from './comments';
 
 const form = `
 <h1>Useful things</h1>
@@ -8,7 +8,8 @@ const form = `
 <a class="btn btn-default" href="/my">Get back to your charsheets</a>
 <h2>Change viewing mode</h2>
 
-<p>Print mode removes empty elements (as "none", or empty dots) and temporary values which you can change during session - such as willpower, health, exp, etc.</p>
+<p>Print mode removes empty elements (as "none", or empty dots) and temporary values
+ which you can change during session - such as willpower, health, exp, etc.</p>
 
 <p>Everything after "useful things" won\`t be printed anyway.</p>
 
@@ -73,7 +74,7 @@ onclick="compareRevisions()">Compare</button>
 
 function loadForm()
 {
-  $('.useful_things').html(data);
+  $('.useful_things').html(form);
 }
 
-module.exports = {form, loadForm};
+export {form, loadForm};

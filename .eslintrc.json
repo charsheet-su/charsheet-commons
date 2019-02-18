@@ -9,17 +9,17 @@
   "env": {
     "browser": false,
     "node": true,
-    "mocha": true
+    "mocha": false
   },
   "extends": "airbnb-base",
   "overrides": [
     {
       "files": [
-        "src/js/**/*.js"
+        "src/**/*.js"
       ],
       "env": {
         "browser": true,
-        "node": true,
+        "node": false,
         "jquery": true
       },
       "parserOptions": {

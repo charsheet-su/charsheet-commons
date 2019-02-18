@@ -1,9 +1,10 @@
+import $ from 'jquery';
 
 /**
  * just a little something to show while loading
  * @type {{show, hide}}
  */
-function loadingPannel() {
+function LoadingPannel() {
   const lpDialog = $(`
     <div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
     <div class='modal-dialog' >
@@ -34,7 +35,7 @@ function loadingPannel() {
  * we use it to show errors
  * @type {{show, hide}}
  */
-function errorPannel() {
+function ErrorPannel() {
   const lpDialog = $(`<div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
     <div class='modal-dialog' >
     <div class='modal-content'>
@@ -62,7 +63,10 @@ function errorPannel() {
   };
 }
 
-module.exports = {
-  errorPannel: errorPannel(),
-  loadingPannel: loadingPannel(),
+const errorPannel = ErrorPannel();
+const loadingPannel = LoadingPannel();
+
+export {
+  errorPannel,
+  loadingPannel,
 };
