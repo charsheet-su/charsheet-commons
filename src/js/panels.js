@@ -4,8 +4,11 @@ import $ from 'jquery';
  * just a little something to show while loading
  * @type {{show, hide}}
  */
-function LoadingPanel() {
-  const lpDialog = $(`
+class LoadingPanel
+{
+  constructor()
+  {
+    this.lpDialog = $(`
     <div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
     <div class='modal-dialog' >
     <div class='modal-content'>
@@ -21,22 +24,25 @@ function LoadingPanel() {
     </div>
     </div>
     </div>`);
-  return {
-    show() {
-      lpDialog.modal('show');
-    },
-    hide() {
-      lpDialog.modal('hide');
-    },
-  };
+  }
+
+  show() {
+    this.lpDialog.modal('show');
+  }
+
+  hide() {
+    this.lpDialog.modal('hide');
+  }
 }
 
 /**
  * we use it to show errors
  * @type {{show, hide}}
  */
-function ErrorPanel() {
-  const lpDialog = $(`<div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
+class ErrorPanel
+{
+  constructor() {
+    this.lpDialog = $(`<div class='modal' id='lpDialog' data-backdrop='static' data-keyboard='false'>
     <div class='modal-dialog' >
     <div class='modal-content'>
     <div class='modal-header'><b>Error!</b></div>
@@ -51,20 +57,20 @@ function ErrorPanel() {
     </div>
     </div>
     </div>`);
-  return {
-    show(error) {
+  }
 
-      lpDialog.find('.alert').html(error);
-      lpDialog.modal('show');
-    },
-    hide() {
-      lpDialog.modal('hide');
-    },
-  };
+  show(error) {
+    this.lpDialog.find('.alert').html(error);
+    this.lpDialog.modal('show');
+  }
+
+  hide() {
+    this.lpDialog.modal('hide');
+  }
 }
 
-const errorPanel = ErrorPanel();
-const loadingPanel = LoadingPanel();
+const errorPanel = new ErrorPanel();
+const loadingPanel = new LoadingPanel();
 
 export {
   errorPanel,
