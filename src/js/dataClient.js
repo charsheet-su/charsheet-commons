@@ -17,7 +17,7 @@ async function load(mockData) {
 }
 
 // here we send dot values to server with ajax
-async function sendDots(attr, value) {
+async function sendDot(attr, value) {
   // var data = {};
   // attr=attr.replace('[','%5B').replace(']','%5D');
   // data[attr] = value;
@@ -53,5 +53,5 @@ async function sendDots(attr, value) {
 }
 
 export {
-  load, sendDots,
+  load, sendDot,
 };

@@ -13,8 +13,8 @@ const form = `
 
 <p>Everything after "useful things" won\`t be printed anyway.</p>
 
-<button class="btn btn-default" type="button" onclick="changeMode(1)">Print mode</button>
-<button class="btn btn-default" type="button" onclick="changeMode(0)">Edit mode</button>
+<button class="btn btn-default" type="button" onclick="window.changeMode(1)">Print mode</button>
+<button class="btn btn-default" type="button" onclick="window.changeMode(0)">Edit mode</button>
 
 <h2>Revisions</h2>
 
