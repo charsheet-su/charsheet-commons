@@ -20,9 +20,6 @@ function loadComments() {
       errorPanel.show('Error getting comments');
     });
 }
-$(document).ready(() => {
-  loadComments();
-});
 
 function addComment() {
 
