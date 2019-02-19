@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import * as request from 'axios';
 import {errorPanel} from './panels';
 import {isDevel} from './options';
 
@@ -8,7 +9,7 @@ async function loadComments() {
     return true;
   }
   try {
-    const data = await $.get('/api/get_comments');
+    const data = await request('/api/get_comments');
     const t = $('.comments tbody');
     t.empty();// clean
     let i = 1;
@@ -35,7 +36,7 @@ async function addComment() {
   }
   const data = {comment};
   try {
-    const reply = await $.ajax({
+    const reply = await request({
       url: '/api/add_comment',
       data,
       type: 'POST',

@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import * as request from 'axios';
 import {errorPanel} from './panels';
 import {isDevel} from './options';
 
@@ -26,7 +27,7 @@ async function compareRevisions() {
 
   const data = {compare_from: compareFrom, compare_to: compareTo};
   try {
-    const reply = await $.ajax({
+    const reply = await request({
       url: '/api/compare_revisions',
       data,
       type: 'POST',
@@ -59,7 +60,7 @@ function viewRevision(id) {
 async function restoreRevision(revisionId) {
   const data = {revision_id: revisionId};
   try {
-    const reply = await $.ajax({
+    const reply = await request({
       url: '/api/restore_revision',
       data,
       type: 'POST',
@@ -84,7 +85,7 @@ async function loadRevisions() {
     return true;
   }
   try {
-    const data = await $.get('/api/get_revisions');
+    const data = await request('/api/get_revisions');
     const table = $('.revisions tbody');
     table.empty();// clean
     let i = 1;
@@ -126,7 +127,7 @@ async function saveRevision() {
   }
   const data = {comment};
   try {
-    const reply = $.ajax({
+    const reply = await request({
       url: '/api/add_revision',
       data,
       type: 'POST',

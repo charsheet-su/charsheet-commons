@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import * as request from 'axios';
 import {errorPanel} from './panels';
 
 async function readURL(input, to) {
@@ -19,12 +20,11 @@ async function readURL(input, to) {
   formdata.append('image_type', to);
 
   try {
-    const res = await $.ajax({
+    const res = await request({
       url: '/api/upload_image',
       type: 'POST',
       data: formdata,
-      processData: false,
-      contentType: false,
+      config: { headers: {'Content-Type': 'multipart/form-data' }},
     });
 
     if (res.error) {
@@ -49,12 +49,12 @@ async function removeImage(type) {
   const data = new FormData();
   data.append('image_type', type);
   try {
-    const res = await $.ajax({
+    const res = await request({
       url: '/api/removeImage',
       type: 'POST',
       data,
-      processData: false,
-      contentType: false});
+      config: { headers: {'Content-Type': 'multipart/form-data' }},
+    });
     if (res.error) {
       errorPanel.show(`Error removing image!<p>${res.error}</p>`);
       return false;

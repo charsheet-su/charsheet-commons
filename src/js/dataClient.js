@@ -1,4 +1,4 @@
-import requestPromise from 'request-promise';
+import * as request from 'axios';
 import {errorPanel} from './panels';
 import {isRevision, isDevel} from './options';
 
@@ -11,10 +11,9 @@ async function load(mockData) {
   }
   const options = {
     uri: `${window.location.protocol}//${window.location.hostname}/api/load`,
-    json: true, // Automatically parses the JSON string in the response
   };
 
-  return requestPromise(options);
+  return request(options);
 }
 
 // here we send dot values to server with ajax
@@ -33,15 +32,14 @@ async function sendDot(attr, value) {
   const options = {
     method: 'POST',
     uri: `${window.location.protocol}//${window.location.hostname}/api/save/`,
-    form: {
-      name: attr, value,
+    data: {
+      name: attr,
+      value,
     },
-    json: true,
-    headers: {},
   };
 
   try {
-    const data = await requestPromise(options);
+    const data = await request(options);
     if (data.error !== undefined) {
       errorPanel.show(`Error sending dots:<p>${data.error}</p>`);
       return false;
