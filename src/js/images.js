@@ -3,7 +3,7 @@ import {errorPanel} from './panels';
 
 async function readURL(input, to) {
 
-  if (!(input.files && input.files[0])) {
+  if (!(input.files || !input.files[0])) {
     return;
   }
   const reader = new FileReader();
@@ -67,8 +67,9 @@ async function removeImage(type) {
 
 function loadImages()
 {
-  $('#group_chart').change(()=>readURL(this, 'group_chart'));
-  $('#character_sketch').change(()=>readURL(this, 'character_sketch'));
+  // non arrow funcs used to have context
+  $('#group_chart').change(function () { readURL(this, 'group_chart'); });
+  $('#character_sketch').change(function () { readURL(this, 'character_sketch'); });
 
   $('#remove_img_group').click(()=>removeImage('group_chart'));
   $('#remove_img_char').click(()=>removeImage('character_sketch'));
