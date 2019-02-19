@@ -40,17 +40,19 @@ async function sendDot(attr, value) {
     headers: {},
   };
 
-  return requestPromise(options)
-    .then((data)=> {
-      if (data.error !== undefined) {
-        errorPanel.show(`Error sending dots: ${data.error}`);
-      }
-      // POST succeeded...
-    })
-    .catch((err)=> {
-      errorPanel.show(`Error sending dots: ${JSON.stringify(err)}`);
-      // POST failed...
-    });
+  try {
+    const data = await requestPromise(options);
+    if (data.error !== undefined) {
+      errorPanel.show(`Error sending dots: ${data.error}`);
+      return false;
+    }
+    return true;
+  }
+  catch (err) {
+    errorPanel.show(`Error sending dots: ${JSON.stringify(err)}`);
+    return false;
+    // POST failed...
+  }
 }
 
 export {

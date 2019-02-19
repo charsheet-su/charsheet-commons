@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import {errorPanel} from './panels';
 
-function readURL(input, to) {
+async function readURL(input, to) {
 
   if (!(input.files && input.files[0])) {
     return;
@@ -42,7 +42,7 @@ function readURL(input, to) {
 
 }
 
-function removeImage(type) {
+async function removeImage(type) {
   const data = new FormData();
   data.append('image_type', type);
   $.ajax({
@@ -67,15 +67,12 @@ function removeImage(type) {
 
 function loadImages()
 {
-  $('#group_chart').change(function () {
-    // errorPannel.show('changed!');
-    readURL(this, 'group_chart');
-  });
+  $('#group_chart').change(()=>readURL(this, 'group_chart'));
+  $('#character_sketch').change(()=>readURL(this, 'character_sketch'));
 
-  $('#character_sketch').change(function () {
-    // errorPannel.show('changed!');
-    readURL(this, 'character_sketch');
-  });
+  $('#remove_img_group').click(()=>removeImage('group_chart'));
+  $('#remove_img_char').click(()=>removeImage('character_sketch'));
 }
 
-export {removeImage, loadImages};
+// eslint-disable-next-line import/prefer-default-export
+export {loadImages};

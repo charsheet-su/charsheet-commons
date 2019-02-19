@@ -2,40 +2,6 @@ import $ from 'jquery';
 import {errorPanel} from './panels';
 import {isDevel} from './options';
 
-async function loadRevisions() {
-  if (isDevel())
-  {
-    return true;
-  }
-  return $.get('/api/get_revisions')
-    .then((data) => {
-      const t = $('.revisions tbody');
-      t.empty();// clean
-      let i = 1;
-      $.each(data, (index, arr) => {
-        if (!arr.id) { arr.id = 0; }
-        const r = $('<tr></tr>');
-        r.append(`<td>${i}</td><td>${arr.nick}</td><td>${arr.made}</td><td>${arr.comment}</td>`);
-        r.append(`<td><input type="radio" name="compare_from" value="${arr.id}"></td>
-<td><input type="radio" name="compare_to" value="${arr.id}"></td>`);
-        r.append(`<td><button type="button" class="btn btn-default" data-dismiss="modal"
- onclick="viewRevision(${arr.id})">View</button></td>`);
-        if (arr.id !== 0)// not current
-        {
-          r.append(`<td><button type="button" class="btn btn-default"
- data-dismiss="modal" onclick="restoreRevision(${arr.id})">Restore</button></td>`);
-        }
-        else r.append('<td></td>');
-        t.append(r);
-        i++;
-      });
-    },
-    )
-    .catch(() => {
-      errorPanel.show('Error getting comments');
-    });
-}
-
 async function compareRevisions() {
   let compareFrom = '';
   let compareTo = '';
@@ -59,22 +25,23 @@ async function compareRevisions() {
   // console.log('comparing ' + compare_from + ' to ' + compare_to);
 
   const data = {compare_from: compareFrom, compare_to: compareTo};
-  return $.ajax({
-    url: '/api/compare_revisions',
-    data,
-    type: 'POST',
-  })
-    .then((reply) => {
-      if (reply.error) {
-        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
-      }
-      else {
-        $('.compare_revisions').html(reply.diff);
-      }
-    })
-    .catch((err) => {
-      errorPanel.show(`Error comparing revisions, error: ${err}`);
+  try {
+    const reply = await $.ajax({
+      url: '/api/compare_revisions',
+      data,
+      type: 'POST',
     });
+    if (reply.error) {
+      errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
+      return false;
+    }
+    $('.compare_revisions').html(reply.diff);
+    return true;
+  }
+  catch (err) {
+    errorPanel.show(`Error comparing revisions, error: ${err}`);
+    return false;
+  }
 }
 
 function viewRevision(id) {
@@ -90,49 +57,88 @@ function viewRevision(id) {
 
 async function restoreRevision(revisionId) {
   const data = {revision_id: revisionId};
-  return $.ajax({
-    url: '/api/restore_revision',
-    data,
-    type: 'POST',
-  })
-    .then((reply) => {
-      if (reply.error) {
-        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
-      }
-      else {
-        viewRevision(0);
-      }
-    })
-    .catch((err) => {
-      errorPanel.show(`Error restoring revision, error: ${err}`);
+  try {
+    const reply = await $.ajax({
+      url: '/api/restore_revision',
+      data,
+      type: 'POST',
     });
+    if (reply.error) {
+      errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
+      return false;
+    }
+    viewRevision(0);
+    return true;
+  }
+  catch (err) {
+    errorPanel.show(`Error restoring revision, error: ${err}`);
+    return false;
+  }
+}
+
+async function loadRevisions() {
+  if (isDevel())
+  {
+    return true;
+  }
+  try {
+    const data = await $.get('/api/get_revisions');
+    const table = $('.revisions tbody');
+    table.empty();// clean
+    let i = 1;
+    data.forEach((arr)=>{
+      if (!arr.id) { arr.id = 0; }
+      const row = $('<tr></tr>');
+      row.append(`<td>${i}</td><td>${arr.nick}</td><td>${arr.made}</td><td>${arr.comment}</td>`);
+      row.append(`<td><input type="radio" name="compare_from" value="${arr.id}"></td>
+<td><input type="radio" name="compare_to" value="${arr.id}"></td>`);
+      const viewRevisionBtn = $('<button type="button" class="btn btn-default" data-dismiss="modal">View</button>');
+      viewRevisionBtn.click(()=>viewRevision(arr.id));
+      row.append($('<td></td>').append(viewRevisionBtn));
+      if (arr.id !== 0)// not current
+      {
+        const restoreRevisionButton = $('<button type="button" class="btn btn-default" data-dismiss="modal" >Restore</button>');
+        restoreRevisionButton.click(()=>restoreRevision(arr.id));
+        row.append($('<td></td>').append(restoreRevisionButton));
+      }
+      else row.append('<td></td>');
+      table.append(row);
+      i++;
+    });
+    return true;
+  }
+  catch (err)
+  {
+    errorPanel.show(`Error getting comments ${err}`);
+    return false;
+  }
 }
 
 
-function saveRevision() {
+async function saveRevision() {
   const comment = $('input[name="revision_comment"]').val();
   if (!comment) {
     errorPanel.show('Please enter comment text');
     return false;
   }
   const data = {comment};
-  return $.ajax({
-    url: '/api/add_revision',
-    data,
-    type: 'POST',
-  })
-    .then((reply) => {
-      if (reply.error) {
-        errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
-        return false;
-      }
-
-      return loadRevisions();
-
-    })
-    .catch((err) => {
-      errorPanel.show(`Error saving revision, error: ${err}`);
+  try {
+    const reply = $.ajax({
+      url: '/api/add_revision',
+      data,
+      type: 'POST',
     });
+    if (reply.error) {
+      errorPanel.show(`Please correct your input:<p>${reply.error}</p>`);
+      return false;
+    }
+
+    return loadRevisions();
+  }
+  catch (err) {
+    errorPanel.show(`Error saving revision, error: ${err}`);
+    return false;
+  }
 }
 
 export {
