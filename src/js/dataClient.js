@@ -43,13 +43,13 @@ async function sendDot(attr, value) {
   try {
     const data = await requestPromise(options);
     if (data.error !== undefined) {
-      errorPanel.show(`Error sending dots: ${data.error}`);
+      errorPanel.show(`Error sending dots:<p>${data.error}</p>`);
       return false;
     }
     return true;
   }
   catch (err) {
-    errorPanel.show(`Error sending dots: ${JSON.stringify(err)}`);
+    errorPanel.show(`Error sending dots: <p>${err.message}</p>`);
     return false;
     // POST failed...
   }

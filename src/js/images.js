@@ -28,14 +28,14 @@ async function readURL(input, to) {
     contentType: false,
     success(res) {
       if (res.error) {
-        errorPanel.show(`Error uploading image!${res.error}`);
+        errorPanel.show(`Error uploading image!<p>${res.error}</p>`);
 
       } else if (res.uri) {
         $(`img[class="${to}"]`).attr('src', res.uri).css('display', 'block');
       }
     },
     error(res) {
-      errorPanel.show(`Error uploading image!${res}`);
+      errorPanel.show(`Error uploading image!<p>${res.message}</p>`);
     },
   });
 
@@ -53,14 +53,14 @@ async function removeImage(type) {
     contentType: false,
     success(res) {
       if (res.error) {
-        errorPanel.show(`Error removing image!${res.error}`);
+        errorPanel.show(`Error removing image!<p>${res.error}</p>`);
 
       } else {
         $(`img[class="${type}"]`).css('display', 'none');// default image
       }
     },
     error(res) {
-      errorPanel.show(`Error uploading image!${res}`);
+      errorPanel.show(`Error uploading image!<p>${res.message}</p>`);
     },
   });
 }
