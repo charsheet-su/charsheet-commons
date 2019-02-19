@@ -4,7 +4,8 @@ import {errorPanel} from './panels';
 async function readURL(input, to) {
 
   if (!(input.files || !input.files[0])) {
-    return;
+    errorPanel.show('No image to add!');
+    return false;
   }
   const reader = new FileReader();
   const formdata = new FormData();
@@ -17,54 +18,55 @@ async function readURL(input, to) {
   formdata.append('images', input.files[0]);
   formdata.append('image_type', to);
 
-  if (!formdata) {
-    return;
+  try {
+    const res = await $.ajax({
+      url: '/api/upload_image',
+      type: 'POST',
+      data: formdata,
+      processData: false,
+      contentType: false,
+    });
+
+    if (res.error) {
+      errorPanel.show(`Error uploading image!<p>${res.error}</p>`);
+      return false;
+    }
+    if (!res.uri) {
+      errorPanel.show(`No uri in result!<p>${JSON.stringify(res)}</p>`);
+      return false;
+    }
+    $(`img[class="${to}"]`).attr('src', res.uri).css('display', 'block');
+    return true;
   }
-  $.ajax({
-    url: '/api/upload_image',
-    type: 'POST',
-    data: formdata,
-    processData: false,
-    contentType: false,
-    success(res) {
-      if (res.error) {
-        errorPanel.show(`Error uploading image!<p>${res.error}</p>`);
-
-      } else if (res.uri) {
-        $(`img[class="${to}"]`).attr('src', res.uri).css('display', 'block');
-      }
-    },
-    error(err) {
-      errorPanel.show(`Error uploading image!<p>${err.message}</p>`);
-      console.log(err);
-    },
-  });
-
-
+  catch (err) {
+    errorPanel.show(`Error uploading image!<p>${err.message}</p>`);
+    console.log(err);
+    return false;
+  }
 }
 
 async function removeImage(type) {
   const data = new FormData();
   data.append('image_type', type);
-  $.ajax({
-    url: '/api/removeImage',
-    type: 'POST',
-    data,
-    processData: false,
-    contentType: false,
-    success(res) {
-      if (res.error) {
-        errorPanel.show(`Error removing image!<p>${res.error}</p>`);
-
-      } else {
-        $(`img[class="${type}"]`).css('display', 'none');// default image
-      }
-    },
-    error(err) {
-      errorPanel.show(`Error uploading image!<p>${err.message}</p>`);
-      console.log(err);
-    },
-  });
+  try {
+    const res = await $.ajax({
+      url: '/api/removeImage',
+      type: 'POST',
+      data,
+      processData: false,
+      contentType: false});
+    if (res.error) {
+      errorPanel.show(`Error removing image!<p>${res.error}</p>`);
+      return false;
+    }
+    $(`img[class="${type}"]`).css('display', 'none');// default image
+    return true;
+  }
+  catch (err) {
+    errorPanel.show(`Error uploading image!<p>${err.message}</p>`);
+    console.log(err);
+    return false;
+  }
 }
 
 function loadImages()
