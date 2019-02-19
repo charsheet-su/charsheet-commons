@@ -50,6 +50,7 @@ async function sendDot(attr, value) {
   }
   catch (err) {
     errorPanel.show(`Error sending dots: <p>${err.message}</p>`);
+    console.log(err);
     return false;
     // POST failed...
   }

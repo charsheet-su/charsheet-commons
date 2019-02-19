@@ -1,6 +1,6 @@
 {
   "name": "charsheet-commons",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Charsheet.su - common library",
   "main": "src/js/index.js",
   "keywords": [

@@ -40,6 +40,7 @@ async function compareRevisions() {
   }
   catch (err) {
     errorPanel.show(`Error comparing revisions, error: <p>${err.message}</p>`);
+    console.log(err);
     return false;
   }
 }
@@ -72,6 +73,7 @@ async function restoreRevision(revisionId) {
   }
   catch (err) {
     errorPanel.show(`Error restoring revision, error: <p>${err.message}</p>`);
+    console.log(err);
     return false;
   }
 }
@@ -110,6 +112,7 @@ async function loadRevisions() {
   catch (err)
   {
     errorPanel.show(`Error getting comments <p>${err.message}</p>`);
+    console.log(err);
     return false;
   }
 }
@@ -137,6 +140,7 @@ async function saveRevision() {
   }
   catch (err) {
     errorPanel.show(`Error saving revision, error: <p>${err.message}</p>`);
+    console.log(err);
     return false;
   }
 }

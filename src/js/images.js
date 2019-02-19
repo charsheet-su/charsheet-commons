@@ -34,8 +34,9 @@ async function readURL(input, to) {
         $(`img[class="${to}"]`).attr('src', res.uri).css('display', 'block');
       }
     },
-    error(res) {
-      errorPanel.show(`Error uploading image!<p>${res.message}</p>`);
+    error(err) {
+      errorPanel.show(`Error uploading image!<p>${err.message}</p>`);
+      console.log(err);
     },
   });
 
@@ -59,8 +60,9 @@ async function removeImage(type) {
         $(`img[class="${type}"]`).css('display', 'none');// default image
       }
     },
-    error(res) {
-      errorPanel.show(`Error uploading image!<p>${res.message}</p>`);
+    error(err) {
+      errorPanel.show(`Error uploading image!<p>${err.message}</p>`);
+      console.log(err);
     },
   });
 }

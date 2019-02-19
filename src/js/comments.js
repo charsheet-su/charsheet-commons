@@ -22,6 +22,7 @@ async function loadComments() {
   }
   catch (err) {
     errorPanel.show(`Error getting comments <p>${err.message}</p>`);
+    console.log(err);
     return false;
   }
 }
@@ -47,6 +48,7 @@ async function addComment() {
   }
   catch (err) {
     errorPanel.show(`Error saving sheet, error:<p>${err.message}</p>`);
+    console.log(err);
     return false;
   }
 }
